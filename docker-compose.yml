@@ -12,3 +12,4 @@ services:
       - ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}
       - PATH=/:${PATH}
     tty: true
+ARM_SUBSCRIPTION_ID

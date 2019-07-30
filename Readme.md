@@ -31,6 +31,10 @@ then use docker exec to connect to the container
 Once you attach to the container, cd into Terraform folder
 `cd Terraform`
 
+export TF_VAR_client_id=${ARM_CLIENT_ID}
+export TF_VAR_client_secret=${ARM_CLIENT_SECRET}
+export TF_subscription_id={ARM_SUBSCRIPTION_ID}
+
 Initialize Terraform
 `terraform init`
 
@@ -38,19 +42,14 @@ Run Terraform plan
 `terraform plan`
 
 Apply the configuration
-`terraform apply`
+`terraform apply -auto-approve`
 
-## Setting up K8s with kubeadm
 
-After installing docker, kubectl, kubeapi, kubeadm
+echo "$(terraform output kube_config)" > ../<clustername>-config
 
-- Initialize kubeadm
-  sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+This will copy the config to a file called azurek8s
 
-- Configure kubectl
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+On your host machine
 
-- Install calico
-  kubectl apply -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
+cd to the project folder (ex: baks) and
+`export KUBECONFIG=./<clustername>-config
